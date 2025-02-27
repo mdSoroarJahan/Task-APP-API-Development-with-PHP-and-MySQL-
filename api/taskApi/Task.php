@@ -51,6 +51,8 @@ public function updateTask($id, $data){
     $existingTask = $result->fetch_assoc();
 
     $title = isset($data['title']) ? $data['title'] : $existingTask['title'];
+    $description = isset($data['description']) ? $data['description'] : $existingTask['description'];
+    $priority = isset($data['priority']) ? $data['priority'] : $existingTask['priority'];
 }
 
 
