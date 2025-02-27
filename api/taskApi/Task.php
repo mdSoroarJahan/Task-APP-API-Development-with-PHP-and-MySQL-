@@ -24,36 +24,57 @@ class Tasks{
     }
 
     //create a new tasks
-public function createTask($data){
-    $title = $data['title'];
-    $description = $data['description'] ?? "";
-    $priority = $data['priority'] ?? "low";
+    public function createTask($data){
+        $title = $data['title'];
+        $description = $data['description'] ?? "";
+        $priority = $data['priority'] ?? "low";
 
-    $query = "INSERT INTO tasks(title, description, priority)
-    VALUES('$title', '$description', '$priority')";
+        $query = "INSERT INTO tasks(title, description, priority)
+        VALUES('$title', '$description', '$priority')";
 
-    if($this->conn->query($query)){
-        return ["message" => "Task created successfully."];
-    }
-    return ["error" => "Failed to create task."];
-}
-
-//Update a task
-public function updateTask($id, $data){
-    $id = intval($id);
-    $result = $this->conn->query("SELECT * FROM tasks WHERE id = $id");
-
-    if($result->num_rows === 0){
-        http_response_code(404);
-        return ["error" => "Task not found."];
+        if($this->conn->query($query)){
+            return ["message" => "Task created successfully."];
+        }
+        return ["error" => "Failed to create task."];
     }
 
-    $existingTask = $result->fetch_assoc();
+    //Update a task
+    public function updateTask($id, $data){
+        $id = intval($id);
+        $result = $this->conn->query("SELECT * FROM tasks WHERE id = $id");
 
-    $title = isset($data['title']) ? $data['title'] : $existingTask['title'];
-    $description = isset($data['description']) ? $data['description'] : $existingTask['description'];
-    $priority = isset($data['priority']) ? $data['priority'] : $existingTask['priority'];
-}
+        if($result->num_rows === 0){
+            http_response_code(404);
+            return ["error" => "Task not found."];
+        }
+
+        $existingTask = $result->fetch_assoc();
+
+        //updating tasks
+        $title = isset($data['title']) ? $data['title'] : $existingTask['title'];
+        $description = isset($data['description']) ? $data['description'] : $existingTask['description'];
+        $priority = isset($data['priority']) ? $data['priority'] : $existingTask['priority'];
+        $is_completed = isset($data['is_completed']) ? $data['is_completed'] : $existingTask['is_completed'];
+
+        $query = "UPDATE tasks SET title = '$title', description = '$description', priority = '$priority', is_completed = '$is_completed' WHERE id = $id";
+
+        if($this->conn->query($query)){
+            return ["message" => "Task updated successfully."];
+        }
+        return ["error" => "Failed to update task."];
+
+    }
+
+    //Delete Task
+    public function deleteTask($id){
+        $id = intval($id);
+        $query = "DELETE FROM tasks WHERE id = $id";
+
+        if($this->conn->query($query)){
+            return ["massage" => "Task deleted successfully."];
+        }
+        return ["error" => "Failed to delete task."];
+    }
 
 
 
