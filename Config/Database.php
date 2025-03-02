@@ -13,7 +13,7 @@ class Database{
 
     public function __construct()
     {
-        $this->conn = new mysqli($this->host, $this->db, $this->user, $this->password);
+        $this->conn = new mysqli($this->host, $this->user, $this->password, $this->db);
         if($this->conn->connect_error){
             die(json_encode(
                 ["error" => "Connection Failed"]
@@ -21,7 +21,7 @@ class Database{
         }
     }
 
-    public function getFunction(){
+    public function getConnection(){
         return $this->conn;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Api\TaskApi;
 
-class Tasks{
+class Task{
     private $conn;
     public function __construct($dbConnection)
     {
@@ -33,6 +33,7 @@ class Tasks{
         VALUES('$title', '$description', '$priority')";
 
         if($this->conn->query($query)){
+            http_response_code(201);
             return ["message" => "Task created successfully."];
         }
         return ["error" => "Failed to create task."];

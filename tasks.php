@@ -1,21 +1,20 @@
 <?php
 
 use Api\TaskApi\Router;
-use Api\TaskApi\Task;
 use Config\Database;
+use Api\TaskApi\Task;
 
 require_once "./vendor/autoload.php";
-header("Content-Type: application/json");
+header("Connect-Type: application/json");
 
 //Database Initialization
 $db = new Database();
 $conn = $db->getConnection();
 $task = new Task($conn);
-$router = new Router($task);
+$route = new Router($task);
 
-//Handle Request
-$router->handleRequest();
-
+//handle request
+$route->handleRequest();
 $conn->close();
 
 ?>
